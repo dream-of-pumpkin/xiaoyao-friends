@@ -1,0 +1,14 @@
+# Git 仓库本身（不部署）
+.git/
+.git/**
+
+# Node 依赖和构建产物
+node_modules/
+**/node_modules/
+moon-portfolio/dist/
+
+# WorkBuddy 内部文件
+.workbuddy/
+
+# 说明文档（不需要部署到网站）
+*.md
