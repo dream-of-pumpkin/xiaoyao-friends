@@ -359,15 +359,8 @@
 
         <div class="guestbook">
           <h3>留句话给我</h3>
-          <p class="tip">随便写点什么，我会认真看。写完保存在你自己的浏览器里。</p>
-          <form class="gb-form" id="gbForm">
-            <input type="text" id="gbName" placeholder="你的称呼" maxlength="20">
-            <textarea id="gbText" rows="4" placeholder="想说的话……" maxlength="300"></textarea>
-            <button type="submit" class="gb-btn">留 言</button>
-          </form>
-          <div class="gb-list" id="gbList">
-            <p class="gb-empty">还没有留言，来写第一条吧。</p>
-          </div>
+          <p class="tip">随便写点什么，我会认真看。需要登录 GitHub 账号才能留言。</p>
+          <div class="giscus"></div>
         </div>
       </div>
     </div>
@@ -380,60 +373,20 @@
   <p class="fmeta">读书 · 摄影 · 散步 · 小区的猫　|　浙江　|　慢慢完善中</p>
 </footer>
 
-<script>
-/* 留言本：存在本地浏览器，不上传任何数据 */
-(function () {
-  var KEY = 'xiaoyao_guestbook_v1';
-  var form = document.getElementById('gbForm');
-  var nameEl = document.getElementById('gbName');
-  var textEl = document.getElementById('gbText');
-  var listEl = document.getElementById('gbList');
-
-  function load() {
-    try { return JSON.parse(localStorage.getItem(KEY)) || []; }
-    catch (e) { return []; }
-  }
-  function save(d) {
-    try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {}
-  }
-  function render() {
-    var data = load();
-    listEl.innerHTML = '';
-    if (!data.length) {
-      listEl.innerHTML = '<p class="gb-empty">还没有留言，来写第一条吧。</p>';
-      return;
-    }
-    data.forEach(function (m) {
-      var el = document.createElement('div');
-      el.className = 'gb-msg';
-      var safeName = String(m.name || '').replace(/[<>&"]/g, '');
-      var safeText = String(m.text || '').replace(/[<>&"]/g, '');
-      el.innerHTML =
-        '<div class="gb-meta"><span>' + safeName + '</span><span>' + (m.time || '') + '</span></div>' +
-        '<div class="gb-text"></div>';
-      el.querySelector('.gb-text').textContent = safeText;
-      listEl.appendChild(el);
-    });
-  }
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var name = nameEl.value.trim() || '路过的人';
-    var text = textEl.value.trim();
-    if (!text) return;
-    var data = load();
-    var d = new Date();
-    var time = d.getFullYear() + '.' +
-               ('0' + (d.getMonth() + 1)).slice(-2) + '.' +
-               ('0' + d.getDate()).slice(-2) + ' ' +
-               ('0' + d.getHours()).slice(-2) + ':' +
-               ('0' + d.getMinutes()).slice(-2);
-    data.unshift({ name: name, text: text, time: time });
-    save(data.slice(0, 50));
-    textEl.value = '';
-    render();
-  });
-  render();
-})();
+<script src="https://giscus.app/client.js"
+        data-repo="dream-of-pumpkin/xiaoyao-friends"
+        data-repo-id="R_kgDOVUL2Ag"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOVUL2As4DJaQo"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
 </script>
 
 </body>
