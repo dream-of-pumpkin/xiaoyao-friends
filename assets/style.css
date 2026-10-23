@@ -649,6 +649,10 @@ header {
 .gb-text { font-size: var(--t-sm); color: var(--ink-soft); line-height: 1.95; word-break: break-word; }
 .gb-empty { font-size: var(--t-sm); color: var(--ink-faint); font-style: italic; text-align: center; padding: 24px 0; }
 
+/* Giscus 留言区适配 */
+.giscus { margin-top: 8px; border-radius: 12px; overflow: hidden; }
+.giscus iframe { border: none; border-radius: 12px; }
+
 /* ---------- Footer ---------- */
 footer {
   border-top: 1px solid rgba(122,111,94,.25);
