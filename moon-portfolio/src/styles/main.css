@@ -1,0 +1,406 @@
+/* ============================================================
+   蜡笔手绘涂鸦风个人作品集
+   配色采样自 AI 手绘参考图：
+     纸底 #EBE5D9 / 毛衣 #EDD36C / 头发 #5A3C37 / 皮肤 #E7C5AA
+   粉渐变底 + 深棕手写文字 + 低饱和柔和
+   ============================================================ */
+
+:root{
+  /* —— 粉渐变底 —— */
+  --pink-1:#FDEEEA;
+  --pink-2:#F9DDE2;
+  --pink-3:#F3D5DE;
+  --pink-4:#EBDCE8;
+
+  /* —— 深棕手写文字 —— */
+  --ink:#5A4038;
+  --ink-soft:#7A5C50;
+  --ink-faint:#A08879;
+  --ink-line:#6B4A3E;
+
+  /* —— 强调色（低饱和） —— */
+  --butter:#EDD36C;
+  --butter-soft:#F5E4A8;
+  --blush:#F0B9B4;
+  --dusty:#A8B8C4;
+  --sage:#B3C4A6;
+  --lilac:#C9B6D4;
+
+  /* —— 纸张 —— */
+  --paper:#F7EDE3;
+  --paper-shade:#EADCCC;
+
+  --font-hand:'Caveat','Kalam','Gaegu','Long Cang','Noto Sans SC',cursive;
+  --font-hand-cn:'Long Cang','Kalam','Caveat','Noto Sans SC',cursive;
+  --font-body:'Gaegu','Noto Sans SC',system-ui,sans-serif;
+
+  --shadow-soft:0 10px 30px rgba(122,86,72,.13);
+  --shadow-hover:0 22px 44px rgba(122,86,72,.20);
+  --radius-lg:26px;
+  --radius-md:18px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:var(--font-body);
+  color:var(--ink);
+  /* 粉渐变底：用两层 —— 固定的柔和光晕 + 随内容延展的渐变，
+     避免 background-attachment:fixed 在长页面上出现"下半截变白" */
+  background:
+    radial-gradient(110% 55% at 10% 0%,  rgba(255,255,255,.55) 0%, transparent 60%),
+    radial-gradient(90% 45% at 92% 12%,  rgba(243,213,222,.75) 0%, transparent 62%),
+    linear-gradient(168deg, var(--pink-1) 0%, var(--pink-2) 30%, var(--pink-3) 58%, var(--pink-4) 100%);
+  background-repeat:no-repeat;
+  background-size:100% 100%,100% 100%,100% 100%;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* —— 纸张蜡笔噪点肌理（fixed 覆盖整屏，长页面也连续）—— */
+body::before{
+  content:'';
+  position:fixed; inset:0;
+  z-index:0; pointer-events:none;
+  opacity:.42;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+/* 淡淡的横向蜡笔纹 */
+body::after{
+  content:'';
+  position:fixed; inset:0;
+  z-index:0; pointer-events:none;
+  opacity:.22;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='turbulence' baseFrequency='.012 .9' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23c)' opacity='.5'/%3E%3C/svg%3E");
+  mix-blend-mode:soft-light;
+}
+
+.page{position:relative; z-index:1}
+
+/* ============================================================
+   装饰层：星星闪烁 / 蝴蝶涂鸦
+   ============================================================ */
+.decor{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden}
+
+.star{
+  position:absolute;
+  color:var(--butter);
+  opacity:0;
+  animation:twinkle var(--dur,3.4s) ease-in-out infinite;
+  animation-delay:var(--delay,0s);
+  filter:drop-shadow(0 0 6px rgba(237,211,108,.55));
+}
+.star svg{width:100%; height:100%; display:block}
+@keyframes twinkle{
+  0%,100%{opacity:.12; transform:scale(.72) rotate(0deg)}
+  50%    {opacity:.92; transform:scale(1.1) rotate(22deg)}
+}
+
+/* 手绘蝴蝶 */
+.butterfly{
+  position:absolute;
+  opacity:.5;
+  animation:floaty var(--dur,9s) ease-in-out infinite;
+  animation-delay:var(--delay,0s);
+  color:var(--ink-line);
+}
+.butterfly svg{width:100%; height:100%; display:block}
+@keyframes floaty{
+  0%,100%{transform:translate(0,0) rotate(-6deg)}
+  33%    {transform:translate(14px,-20px) rotate(8deg)}
+  66%    {transform:translate(-10px,-8px) rotate(-10deg)}
+}
+
+/* ============================================================
+   顶部
+   ============================================================ */
+.topbar{
+  position:sticky; top:0; z-index:40;
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  background:rgba(253,238,234,.72);
+  border-bottom:1.5px dashed rgba(107,74,62,.22);
+}
+.topbar-inner{
+  max-width:1180px; margin:0 auto;
+  padding:14px clamp(18px,4vw,40px);
+  display:flex; align-items:center; gap:18px;
+}
+.brand{
+  font-family:var(--font-hand);
+  font-size:26px; font-weight:700;
+  color:var(--ink);
+  text-decoration:none;
+  display:flex; align-items:center; gap:9px;
+  letter-spacing:.02em;
+  white-space:nowrap;
+  flex:none;
+}
+.brand-dot{
+  width:11px; height:11px; border-radius:50%;
+  background:var(--butter);
+  border:1.5px solid var(--ink-line);
+  flex:none;
+}
+.topnav{margin-left:auto; display:flex; gap:26px; list-style:none}
+.topnav a{
+  font-family:var(--font-hand);
+  font-size:21px; color:var(--ink-soft);
+  text-decoration:none;
+  position:relative; padding:2px 0;
+  transition:color .25s;
+}
+.topnav a::after{
+  content:''; position:absolute; left:50%; right:50%; bottom:-2px;
+  height:2.5px; border-radius:2px; background:var(--butter);
+  transition:left .3s, right .3s;
+}
+.topnav a:hover{color:var(--ink)}
+.topnav a:hover::after{left:0; right:0}
+
+/* ============================================================
+   Hero
+   ============================================================ */
+.hero{
+  position:relative;
+  max-width:1180px; margin:0 auto;
+  padding:clamp(44px,7vw,86px) clamp(18px,4vw,40px) clamp(30px,5vw,56px);
+  text-align:center;
+}
+.hero-title{
+  font-family:var(--font-hand);
+  font-weight:700;
+  font-size:clamp(46px,10.5vw,124px);
+  line-height:.95;
+  margin:0 0 6px;
+  color:var(--ink);
+  letter-spacing:.005em;
+  /* 蜡笔手写标题：轻微不规则 */
+  transform:rotate(-1.1deg);
+}
+.hero-title .t2{
+  display:block;
+  color:var(--ink-soft);
+  font-size:.58em;
+  letter-spacing:.06em;
+  transform:rotate(.8deg) translateX(8px);
+  margin-top:.1em;
+}
+.hero-sub{
+  font-family:var(--font-hand-cn);
+  font-size:clamp(17px,2.2vw,23px);
+  color:var(--ink-soft);
+  margin:14px auto 0;
+  max-width:34em;
+  line-height:1.85;
+}
+.hero-sub em{font-style:normal; color:var(--ink); border-bottom:2.5px solid var(--butter); padding-bottom:1px}
+
+/* 手绘下划线 */
+.squiggle{
+  display:block; margin:22px auto 0; width:min(340px,70%);
+  color:var(--butter);
+}
+.squiggle svg{width:100%; height:auto; display:block}
+
+/* ============================================================
+   舞台：女孩 + 四张卡片
+   ============================================================ */
+.stage{
+  position:relative;
+  max-width:1180px; margin:0 auto;
+  padding:0 clamp(18px,4vw,40px) clamp(60px,8vw,110px);
+  display:grid;
+  grid-template-columns:1fr minmax(280px, 400px) 1fr;
+  grid-template-areas:
+    "c1 girl c2"
+    "c3 girl c4";
+  gap:clamp(16px,2.4vw,30px);
+  align-items:center;
+  justify-items:center;
+}
+
+/* —— 女孩 —— */
+.girl{
+  grid-area:girl;
+  position:relative;
+  width:100%;
+  max-width:400px;
+  margin:clamp(4px,1vw,16px) 0;
+  padding:0 clamp(4px,1vw,14px);
+  z-index:2;
+  /* 鼠标跟随的整体轻微位移 */
+  transform:translate3d(var(--gx,0px), var(--gy,0px), 0);
+  transition:transform .5s cubic-bezier(.22,1,.36,1);
+}
+.girl svg{width:100%; height:auto; display:block; overflow:visible}
+
+/* 头部（跟随鼠标转头）—— 旋转中心 = 脖子与身体连接处 */
+.girl-head{
+  transform-origin:50% 46%;
+  transform:rotate(var(--head-rot,0deg));
+  transition:transform .55s cubic-bezier(.25,1,.4,1);
+}
+/* 头部水平位移（假 3D 视差） */
+.girl-head-inner{
+  transform:translateX(var(--head-x,0px));
+  transition:transform .55s cubic-bezier(.25,1,.4,1);
+}
+/* 眼球（独立跟随，反应更快） */
+.girl-eye{
+  transition:transform .28s cubic-bezier(.34,1.4,.64,1);
+}
+.girl-eye.l{transform:translate(var(--ex,0px), var(--ey,0px))}
+.girl-eye.r{transform:translate(var(--ex,0px), var(--ey,0px))}
+
+/* 女孩脚下的手绘阴影 */
+.girl-shadow{
+  position:absolute; left:50%; bottom:-6px;
+  transform:translateX(-50%);
+  width:64%; height:26px;
+  background:radial-gradient(ellipse at center, rgba(107,74,62,.20) 0%, transparent 70%);
+  filter:blur(3px);
+  pointer-events:none;
+}
+
+/* —— 卡片 —— */
+.card{
+  position:relative;
+  z-index:1;
+  width:100%; max-width:330px;
+  background:var(--paper);
+  border:2.5px solid var(--ink-line);
+  border-radius:var(--radius-lg);
+  padding:26px 24px 22px;
+  box-shadow:var(--shadow-soft);
+  text-decoration:none;
+  color:inherit;
+  overflow:hidden;
+  /* 蜡笔纸片质感 */
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(255,255,255,.7) 0, transparent 46%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23p)' opacity='.28'/%3E%3C/svg%3E");
+  transition:transform .42s cubic-bezier(.22,1,.36,1), box-shadow .42s cubic-bezier(.22,1,.36,1);
+  will-change:transform;
+  transform:perspective(900px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg));
+}
+.card::after{
+  content:''; position:absolute; inset:0;
+  border-radius:inherit; pointer-events:none;
+  box-shadow:inset 0 0 0 0 rgba(107,74,62,.25);
+  transition:box-shadow .4s;
+}
+.card:hover{
+  transform:perspective(900px) translateY(-12px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)) rotate(-.7deg);
+  box-shadow:var(--shadow-hover);
+}
+.card:hover::after{box-shadow:inset 0 0 0 7px rgba(237,211,108,.28)}
+.card:active{transform:perspective(900px) translateY(-5px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)) rotate(-.3deg)}
+
+/* 胶带 */
+.tape{
+  position:absolute; top:-13px; left:50%;
+  transform:translateX(-50%) rotate(-3deg);
+  width:88px; height:27px;
+  background:rgba(237,211,108,.72);
+  border-left:1px dashed rgba(107,74,62,.3);
+  border-right:1px dashed rgba(107,74,62,.3);
+  box-shadow:0 2px 5px rgba(107,74,62,.14);
+  z-index:2;
+}
+.card[data-accent="blush"] .tape{background:rgba(240,185,180,.72); transform:translateX(-50%) rotate(2.6deg)}
+.card[data-accent="dusty"] .tape{background:rgba(168,184,196,.72); transform:translateX(-50%) rotate(-1.6deg)}
+.card[data-accent="sage"]  .tape{background:rgba(179,196,166,.72); transform:translateX(-50%) rotate(3.2deg)}
+
+.card-ico{
+  width:62px; height:62px; margin-bottom:12px;
+  color:var(--ink-line);
+}
+.card-ico svg{width:100%; height:100%; display:block}
+.card h3{
+  font-family:var(--font-hand);
+  font-size:31px; font-weight:700;
+  margin:0 0 2px; color:var(--ink);
+  letter-spacing:.01em;
+}
+.card .card-en{
+  font-family:var(--font-hand);
+  font-size:16px; color:var(--ink-faint);
+  letter-spacing:.16em; text-transform:uppercase;
+  margin:0 0 11px;
+}
+.card p{
+  font-family:var(--font-body);
+  font-size:16.5px; line-height:1.72;
+  color:var(--ink-soft); margin:0 0 14px;
+}
+.card-tag{
+  display:inline-block;
+  font-family:var(--font-hand);
+  font-size:16px; color:var(--ink);
+  background:rgba(237,211,108,.42);
+  border:1.5px dashed rgba(107,74,62,.4);
+  border-radius:999px;
+  padding:2px 13px;
+}
+
+.c1{grid-area:c1} .c2{grid-area:c2} .c3{grid-area:c3} .c4{grid-area:c4}
+
+/* ============================================================
+   页脚
+   ============================================================ */
+.footer{
+  position:relative; z-index:1;
+  text-align:center;
+  padding:40px 20px 54px;
+  border-top:2px dashed rgba(107,74,62,.2);
+  margin-top:20px;
+}
+.footer p{
+  font-family:var(--font-hand-cn);
+  font-size:18px; color:var(--ink-soft); margin:0 0 8px;
+}
+.footer .fhand{
+  font-family:var(--font-hand); font-size:24px; color:var(--ink);
+}
+
+/* ============================================================
+   响应式
+   ============================================================ */
+@media(max-width:1000px){
+  .stage{
+    grid-template-columns:1fr 1fr;
+    grid-template-areas:
+      "girl girl"
+      "c1   c2"
+      "c3   c4";
+    gap:22px;
+  }
+  .girl{margin:0 auto 10px; width:min(300px,62vw)}
+  .card{max-width:100%}
+}
+@media(max-width:620px){
+  .topnav{gap:14px; flex:none}
+  .topnav a{font-size:17px}
+  .brand{font-size:20px; gap:6px}
+  .brand-dot{width:9px;height:9px}
+  .topbar-inner{gap:10px; padding:12px 16px}
+  .stage{
+    grid-template-columns:1fr;
+    grid-template-areas:"girl" "c1" "c2" "c3" "c4";
+  }
+  .girl{width:min(260px,66vw)}
+  .card{max-width:340px; margin:0 auto}
+  .hero-title{font-size:clamp(38px,13vw,64px)}
+  .hero-sub{font-size:17px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important; transition-duration:.01ms!important}
+  .card:hover{transform:none}
+}

@@ -1,0 +1,26 @@
+# Windows 系统文件
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node 依赖（不入库，部署时自动装）
+node_modules/
+**/node_modules/
+
+# moon-portfolio 构建产物（部署时由 Cloudflare 重新 build）
+moon-portfolio/dist/
+
+# WorkBuddy 内部记忆文件（不需要入库）
+.workbuddy/
+
+# 日志和临时文件
+*.log
+*.tmp
+.DS_Store

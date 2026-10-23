@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>小瑶 · 读书 摄影 散步 和小区的猫</title>
+<meta name="description" content="小瑶，浙江。喜欢读书、摄影、散步，和小区里的猫。">
+<link rel="stylesheet" href="assets/fonts/NotoSansSC.css">
+<style>
+/* ═══════════════ 字体 ═══════════════ */
+@font-face{font-family:'SF Pro';font-style:normal;font-weight:400;font-display:swap;
+  src:local('SF Pro Text'),local('Helvetica Neue'),local('Arial');}
+@font-face{font-family:'SF Pro';font-style:normal;font-weight:700;font-display:swap;
+  src:local('SF Pro Display'),local('Helvetica Neue Bold'),local('Arial Bold');}
+@font-face{font-family:'SF Pro Thin';font-style:normal;font-weight:100;font-display:swap;
+  src:local('SF Pro Thin'),local('Helvetica Neue Thin'),local('Arial');}
+@font-face{font-family:'Aalto';font-style:normal;font-weight:400;font-display:swap;
+  src:local('Aalto'),local('Arial Narrow'),local('Helvetica Neue Condensed');}
+
+:root{
+  font-family:'SF Pro','Noto Sans SC','PingFang SC','Microsoft YaHei',Arial,sans-serif;
+  color:#fff;background:#090807;font-synthesis:none;
+  --sans:'SF Pro','Noto Sans SC','PingFang SC','Microsoft YaHei',Arial,sans-serif;
+  --thin:'SF Pro Thin','Noto Sans SC',Arial,sans-serif;
+  --display:'Aalto','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+.experience{position:relative;width:100%;height:100%;min-height:540px;overflow:hidden;background:#0a0908}
+
+/* ═══════════════ 背景层 ═══════════════ */
+.backgrounds,.background,.shade,.transition-layer,.transition-layer video{
+  position:absolute;inset:0;width:100%;height:100%}
+.background{object-fit:cover;opacity:0;transition:opacity .8s ease;will-change:opacity}
+.background.is-visible{opacity:1}
+.shade{z-index:1;pointer-events:none;
+  background:linear-gradient(to bottom,transparent 52%,rgba(0,0,0,.88) 100%)}
+
+/* ═══════════════ chrome 通用 ═══════════════ */
+.chrome{position:absolute;z-index:4;transition:opacity .45s ease,filter .45s ease}
+.experience.is-transitioning .chrome{opacity:0;filter:blur(8px);pointer-events:none}
+
+/* ═══════════════ 顶部 ═══════════════ */
+.header{left:clamp(18px,1.95vw,28px);right:clamp(18px,1.95vw,28px);top:clamp(18px,3.1vh,28px);
+  display:flex;justify-content:space-between;align-items:center}
+.header-actions{margin-left:auto;display:flex;align-items:center;gap:12px}
+.nav{display:flex;align-items:center;height:42px;padding:4px 5px;
+  border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.1);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:999px}
+.nav a{color:#fff;text-decoration:none;padding:8px 19px;border-radius:999px;line-height:1;
+  font-size:15px;white-space:nowrap;transition:background .25s,color .25s}
+.nav a:hover{background:rgba(255,255,255,.18)}
+.nav a.active{background:#fff;color:#000}
+.menu{height:42px;padding:0 20px;border:0;border-radius:999px;background:#fff;color:#000;
+  cursor:pointer;font-family:inherit;font-size:15px}
+.menu:hover{opacity:.86}
+
+/* ═══════════════ 左侧爱好列表 ═══════════════ */
+.planet-list{left:clamp(18px,1.95vw,28px);top:50%;transform:translateY(-43%);
+  display:flex;flex-direction:column;gap:6px;font-size:16px;z-index:5}
+.planet-item{display:flex;align-items:center;min-height:20px;color:rgba(255,255,255,.42);
+  letter-spacing:.02em;transition:color .3s}
+.planet-item:hover{color:rgba(255,255,255,.75)}
+.planet-item.active{font-size:18px;font-weight:700;color:#fff;gap:8px}
+.planet-item.active:before{content:'';width:16px;height:16px;border-radius:50%;
+  background:#fff;flex:none}
+
+/* ═══════════════ 传送门 ═══════════════ */
+.portal-wrap{left:50%;top:50%;width:min(320px,31vw);transform:translate(-50%,-54%)}
+.portal-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;
+  font-size:16px;opacity:0;color:rgba(255,255,255,.85);letter-spacing:.04em}
+.portal-heading strong{font-size:18px;margin-left:8px;font-weight:700}
+.portal-heading.is-end{opacity:.55!important}
+.portal-heading.is-end strong{font-style:italic;font-weight:400}
+.portal{position:relative;display:block;width:100%;aspect-ratio:320/350;padding:0;overflow:visible;
+  border:0;border-radius:90px;background:transparent;cursor:pointer;box-shadow:none;
+  transform:none!important}
+.portal img{visibility:hidden;position:absolute;width:1px;height:1px;pointer-events:none}
+.portal-canvas{position:fixed;inset:0;z-index:3;width:100%;height:100%;pointer-events:none}
+
+/* ═══════════════ 底部内容 ═══════════════ */
+.planet-content{left:clamp(28px,4vw,58px);right:clamp(28px,3vw,44px);bottom:clamp(24px,3vh,30px);
+  display:flex;justify-content:space-between;align-items:flex-end;gap:40px;
+  max-height:calc(100vh - 200px);overflow:hidden}
+.planet-content h1{font-family:var(--display);font-size:clamp(128px,21.8vw,314px);
+  font-weight:900;line-height:.86;margin:0 0 -.04em;letter-spacing:0;
+  transform:translateX(-32px);opacity:0;white-space:nowrap;
+  /* scaleX 压缩后左边缘会向内收，需补偿回来，避免首字被裁 */
+  margin-left:calc(32px * .40)}
+.planet-content dl{width:min(447px,34vw);margin:0;font-size:16px;
+  flex:none;max-height:100%;overflow:hidden}
+.planet-content dl{width:min(447px,34vw);margin:0;font-size:16px}
+.fact{display:grid;grid-template-columns:138px 1fr;gap:18px;padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,.48);opacity:0}
+.fact:last-child{border-bottom:0}
+.fact dt{font-weight:700;letter-spacing:.02em}
+.fact dd{margin:0;color:rgba(255,255,255,.82);line-height:1.6}
+
+/* ═══════════════ 其他 ═══════════════ */
+.transition-layer{display:none}
+.scene-canvas{display:none}
+.loading{position:absolute;z-index:12;left:50%;bottom:30px;transform:translateX(-50%);opacity:0;
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;transition:opacity .2s}
+.experience.is-loading .loading{opacity:.8}
+.experience.is-transitioning .header,.experience.is-transitioning .planet-list{
+  opacity:1;filter:none;pointer-events:auto}
+.experience.is-transitioning .shade{opacity:1}
+.experience.is-committing .background{transition:none!important}
+
+/* ═══════════════ 预加载 ═══════════════ */
+.preloader{position:absolute;inset:0;z-index:20;background:#000;overflow:hidden;
+  transition:z-index 0s linear .1s}
+.preloader img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.preloader-shade{position:absolute;inset:auto 0 0;height:35%;
+  background:linear-gradient(to bottom,transparent,#000);transition:opacity .8s}
+.preloader.is-background{z-index:0;opacity:0;pointer-events:none}
+.preloader.is-background .preloader-shade{opacity:0}
+.floating-logo{position:fixed;z-index:22;left:50%;top:50%;width:59px;height:58px;
+  transform:translate(-50%,-50%);will-change:left,top,width,height,transform;
+  transition:left 2s cubic-bezier(.16,1,.3,1),top 2s cubic-bezier(.16,1,.3,1),
+             width 2s cubic-bezier(.16,1,.3,1),height 2s cubic-bezier(.16,1,.3,1),
+             transform 2s cubic-bezier(.16,1,.3,1)}
+.floating-logo.is-docked{left:clamp(18px,1.95vw,28px);top:clamp(18px,3.1vh,28px);
+  width:37px;height:36px;transform:none}
+.floating-logo.is-settled{z-index:5}
+.preloader-count{position:fixed;z-index:22;left:50%;bottom:clamp(22px,3.1vh,28px);
+  display:flex;align-items:flex-end;gap:4px;transform:translateX(-50%);
+  font-family:var(--sans);line-height:1}
+.preloader-count>span:first-child{font-family:var(--thin);font-size:64px;font-weight:100;
+  font-variant-numeric:tabular-nums}
+.preloader-count .percent{font-size:24px;padding-bottom:4px}
+.preloader-count.is-leaving{animation:preload-count-out .75s cubic-bezier(.22,1,.36,1) both}
+@keyframes preload-count-out{to{opacity:0;filter:blur(7px);transform:translate(-50%,-34px)}}
+body:not(.preload-complete) .custom-cursor{opacity:0!important}
+
+/* ═══════════════ 自定义光标 ═══════════════ */
+html,body,button,a,.portal{cursor:none!important}
+.custom-cursor{display:block;position:fixed;left:0;top:0;z-index:100;width:1px;height:1px;
+  pointer-events:none;opacity:0;transition:opacity .2s ease}
+.custom-cursor.is-visible{opacity:1}
+.cursor-dot,.cursor-orbit{position:absolute;left:0;top:0;border-radius:50%;transform:translate(-50%,-50%)}
+.cursor-dot{width:12px;height:12px;background:#fff}
+.cursor-orbit{width:36px;height:36px;border:1px solid #fff;background:rgba(255,255,255,.4);
+  transition:transform .3s cubic-bezier(.22,1,.36,1)}
+.custom-cursor.is-enter .cursor-orbit{transform:translate(-50%,-50%) scale(1.16)}
+.cursor-label{position:absolute;top:26px;left:0;transform:translateX(-50%) translateY(-4px);
+  font:16px/1.2 var(--sans);white-space:nowrap;opacity:0;
+  transition:opacity .2s ease,transform .3s cubic-bezier(.22,1,.36,1)}
+.custom-cursor.is-enter .cursor-label{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ═══════════════ 入场动画 ═══════════════ */
+body:not(.intro-ready) .header,
+body:not(.intro-ready) .planet-list,
+body:not(.intro-ready) .planet-content h1,
+body:not(.intro-ready) .planet-content .fact{opacity:0}
+.intro-ready .header{animation:reveal-down .9s cubic-bezier(.22,1,.36,1) .1s both}
+.intro-ready .planet-list{animation:reveal-side .9s cubic-bezier(.22,1,.36,1) .65s both}
+.content-revealing h1{animation:title-rise 1.05s cubic-bezier(.16,1,.3,1) both}
+.content-revealing .fact{animation:fact-rise .72s cubic-bezier(.22,1,.36,1) both}
+.content-revealing .fact:nth-child(1){animation-delay:.52s}
+.content-revealing .fact:nth-child(2){animation-delay:.68s}
+.content-revealing .fact:nth-child(3){animation-delay:.84s}
+.content-revealing .fact:nth-child(4){animation-delay:1s}
+.mask-revealing .portal-heading{animation:portal-caption .85s cubic-bezier(.22,1,.36,1) both}
+.planet-list.is-switching .planet-item{animation:menu-row .58s cubic-bezier(.22,1,.36,1) both}
+.planet-list.is-switching .planet-item:nth-child(1){animation-delay:.02s}
+.planet-list.is-switching .planet-item:nth-child(2){animation-delay:.05s}
+.planet-list.is-switching .planet-item:nth-child(3){animation-delay:.08s}
+.planet-list.is-switching .planet-item:nth-child(4){animation-delay:.11s}
+.planet-list.is-switching .planet-item:nth-child(5){animation-delay:.14s}
+.planet-list.is-switching .planet-item:nth-child(6){animation-delay:.17s}
+.planet-list.is-switching .planet-item:nth-child(7){animation-delay:.2s}
+.planet-list.is-switching .planet-item:nth-child(8){animation-delay:.23s}
+.planet-list.is-switching .planet-item.active:before{animation:active-dot .55s cubic-bezier(.22,1,.36,1) .18s both}
+
+@keyframes reveal-down{from{opacity:0;filter:blur(8px);transform:translateY(-18px)}
+  to{opacity:1;filter:blur(0);transform:translateY(0)}}
+@keyframes reveal-side{from{opacity:0;filter:blur(8px);transform:translate(-20px,-43%)}
+  to{opacity:1;filter:blur(0);transform:translate(0,-43%)}}
+@keyframes title-rise{from{opacity:0;filter:blur(12px);transform:translate(-32px,42px)}
+  to{opacity:1;filter:blur(0);transform:translate(-32px,0)}}
+@keyframes fact-rise{from{opacity:0;filter:blur(7px);transform:translateY(18px)}
+  to{opacity:1;filter:blur(0);transform:translateY(0)}}
+@keyframes portal-caption{from{opacity:0;filter:blur(7px);transform:translateY(22px)}
+  to{opacity:1;filter:blur(0);transform:translateY(0)}}
+@keyframes menu-row{from{opacity:.35;transform:translateX(-8px)}
+  to{opacity:1;transform:translateX(0)}}
+@keyframes active-dot{from{opacity:0;transform:scale(0)}
+  to{opacity:1;transform:scale(1)}}
+
+/* ═══════════════ 响应式 ═══════════════ */
+@media(max-width:900px){
+  .nav{display:none}
+  .portal-wrap{width:min(300px,48vw)}
+  .planet-content h1{font-size:clamp(105px,24vw,190px)}
+  .planet-content dl{width:43vw}
+  .fact{grid-template-columns:110px 1fr}
+  .planet-list{font-size:14px}
+  .planet-item.active{font-size:16px}
+}
+@media(max-width:640px){
+  .experience{min-height:600px}
+  .planet-list{display:none}
+  .portal-wrap{top:44%;width:min(260px,66vw)}
+  .planet-content{left:18px;right:18px;bottom:18px;display:block}
+  .planet-content h1{font-size:clamp(98px,30vw,160px);margin-bottom:20px;transform:translateX(-10px)}
+  .content-revealing h1{animation-name:title-rise-sm}
+  .planet-content dl{width:100%;font-size:13px}
+  .fact{grid-template-columns:92px 1fr;padding:5px 0;gap:10px}
+  .portal-heading{font-size:14px}
+  .portal-heading strong{font-size:16px}
+  .menu{height:38px;padding:0 16px}
+  .portal{border-radius:70px}
+}
+@keyframes title-rise-sm{from{opacity:0;filter:blur(10px);transform:translate(-10px,28px)}
+  to{opacity:1;filter:blur(0);transform:translate(-10px,0)}}
+@media(prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms!important}
+  .portal{transform:none!important}
+}
+</style>
+</head>
+<body>
+
+<main class="experience" data-planet="reading">
+
+  <!-- 背景层：随状态切换 -->
+  <div class="backgrounds" aria-hidden="true">
+    <img id="reading-background" class="background is-visible" src="assets/img-dark/s-reading.jpg" alt="">
+    <img id="photo-background" class="background" src="assets/img-dark/s-photo.jpg" alt="">
+    <img id="walk-background" class="background" src="assets/img-dark/s-walk.jpg" alt="">
+    <img id="cat-background" class="background" src="assets/img-dark/s-cat.jpg" alt="">
+  </div>
+
+  <!-- 预加载 -->
+  <div class="preloader" id="preloader" aria-label="正在加载">
+    <img id="preloader-video" src="assets/img-dark/s-street.jpg" alt="">
+    <div class="preloader-shade"></div>
+  </div>
+
+  <img class="floating-logo" id="floating-logo" src="assets/logo.svg" alt="小瑶">
+  <div class="preloader-count" id="preloader-count" aria-live="polite">
+    <span id="preloader-value">0</span><span class="percent">%</span>
+  </div>
+
+  <canvas id="scene-canvas" class="scene-canvas" aria-hidden="true"></canvas>
+  <div class="shade" aria-hidden="true"></div>
+
+  <!-- 顶部 -->
+  <header class="header chrome">
+    <div class="header-actions">
+      <nav class="nav" aria-label="主导航">
+        <a class="active" href="#about">关于</a>
+        <a href="#hobbies">爱好</a>
+        <a href="#contact">联系</a>
+      </nav>
+      <button class="menu" type="button">菜单</button>
+    </div>
+  </header>
+
+  <!-- 左侧列表 -->
+  <aside class="planet-list chrome" id="hobby-list" aria-label="我的爱好"></aside>
+
+  <!-- 传送门 -->
+  <canvas id="portal-canvas" class="portal-canvas" aria-hidden="true"></canvas>
+  <section class="portal-wrap chrome" aria-label="下一站">
+    <div class="portal-heading">
+      <span>Next:</span>
+      <span><span id="next-number">[02]</span> <strong id="next-name">Photography</strong></span>
+    </div>
+    <button class="portal" id="portal" type="button" aria-label="前往 摄影">
+      <img id="portal-video" src="assets/img-dark/s-photo.jpg" alt="">
+      <img id="portal-image" src="assets/img-dark/s-books.jpg" alt="">
+    </button>
+  </section>
+
+  <!-- 底部内容 -->
+  <section class="planet-content chrome" aria-live="polite">
+    <h1 id="planet-title">READING</h1>
+    <dl id="facts"></dl>
+  </section>
+
+  <div class="transition-layer" aria-hidden="true"><img id="transition-video" alt=""></div>
+  <div class="loading" aria-hidden="true">Preparing…</div>
+  <div class="custom-cursor" aria-hidden="true">
+    <span class="cursor-orbit"></span>
+    <span class="cursor-dot"></span>
+    <span class="cursor-label">Enter</span>
+  </div>
+</main>
+
+<script>
+(function(){
+'use strict';
+
+/* ═══════════ DOM ═══════════ */
+var experience  = document.querySelector('.experience');
+var preloader   = document.getElementById('preloader');
+var preVideo    = document.getElementById('preloader-video');
+var countEl     = document.getElementById('preloader-count');
+var valueEl     = document.getElementById('preloader-value');
+var logo        = document.getElementById('floating-logo');
+var titleEl     = document.getElementById('planet-title');
+var factsEl     = document.getElementById('facts');
+var listEl      = document.getElementById('hobby-list');
+var nextNameEl  = document.getElementById('next-name');
+var nextNumEl   = document.getElementById('next-number');
+var portalHeading = document.querySelector('.portal-heading');
+var portalBtn   = document.getElementById('portal');
+var portalVideo = document.getElementById('portal-video');
+var portalImage = document.getElementById('portal-image');
+var transitionVideo = document.getElementById('transition-video');
+var canvas      = document.getElementById('portal-canvas');
+var sceneCanvas = document.getElementById('scene-canvas');
+var cursor      = document.querySelector('.custom-cursor');
+var ctx     = canvas.getContext('2d');
+var sceneCtx= sceneCanvas.getContext('2d');
+
+/* ═══════════ 数据 ═══════════ */
+var states = {
+  reading:{ name:'读书', en:'Reading', next:'photo', number:'[02]',
+    background:'reading-background', image:'assets/img-dark/s-books.jpg',
+    facts:[['常读：','莫言、余华、王小波，三位轮着读，读完一本记一本。'],
+           ['口味：','偏爱现实题材和长句，读到心里发疼那种。'],
+           ['状态：','读进去了会忘记时间，一抬头天已经黑了。'],
+           ['下一本：','还没定，看哪一本书名先吸引我。']] },
+  photo:{ name:'摄影', en:'Photography', next:'walk', number:'[03]',
+    background:'photo-background', image:'assets/img-dark/s-walk.jpg',
+    facts:[['喜欢拍：','傍晚的光、街角没人注意的细节，还有猫的睡姿。'],
+           ['状态：','按下快门那一刻，觉得这一刻被认真对待了。'],
+           ['常在：','出门散步的时候顺手带相机，不刻意。'],
+           ['最满意：','还没有——总觉得下一张会更好。']] },
+  walk:{ name:'散步', en:'Walking', next:'cat', number:'[04]',
+    background:'walk-background', image:'assets/img-dark/s-cat.jpg',
+    facts:[['时段：','最好傍晚上下班，天凉下来那阵最舒服。'],
+           ['地点：','绕小区两圈，或者坐公交到没去过的站再走回来。'],
+           ['在浙江：','雨下得很细，走在雨里不用打伞，等一会儿就停了。'],
+           ['收获：','走着走着，一天里堵住的事就自己通了。']] },
+  cat:{ name:'小区的猫', en:'Cats', next:null, number:'[01]',
+    background:'cat-background', image:'assets/img-dark/s-reading.jpg',
+    facts:[['关系：','我没养猫，但小区里有很多。橘的、黑的、白的。'],
+           ['常做的事：','带一小袋猫粮下去，蹲在一边看它们吃完再走。'],
+           ['地点：','楼下花坛、车库、快递柜旁边，来回都是它们。'],
+           ['收获：','蹲下来那十分钟，脑子里就清净了。']] }
+};
+var order = ['reading','photo','walk','cat'];
+var current = 'reading';
+var busy = false;
+var firstRender = true;
+
+/* ═══════════ 缓动 ═══════════ */
+/* ═══════════ 工具 ═══════════ */
+function clamp(lo, v, hi){ return Math.max(lo, Math.min(v, hi)); }
+function ease(t){ return t<.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2; }
+function animateValue(setter,duration){
+  return new Promise(function(res){
+    var start=null;
+    function step(ts){
+      if(start===null) start=ts;
+      var p=Math.min(1,(ts-start)/duration);
+      setter(ease(p));
+      if(p<1) requestAnimationFrame(step); else res();
+    }
+    requestAnimationFrame(step);
+  });
+}
+function wait(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+
+/* ═══════════ 画布尺寸 ═══════════ */
+var dpr = 1;
+function resizeCanvas(){
+  dpr = Math.min(window.devicePixelRatio||1, 2);
+  canvas.width = Math.floor(innerWidth*dpr);
+  canvas.height= Math.floor(innerHeight*dpr);
+  canvas.style.width = innerWidth+'px';
+  canvas.style.height= innerHeight+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  if(!frozen){
+    sceneCanvas.width = Math.floor(innerWidth*dpr);
+    sceneCanvas.height= Math.floor(innerHeight*dpr);
+    sceneCanvas.style.width = innerWidth+'px';
+    sceneCanvas.style.height= innerHeight+'px';
+    sceneCtx.setTransform(dpr,0,0,dpr,0,0);
+  }
+}
+window.addEventListener('resize', function(){
+  resizeCanvas();
+  fitTitle();
+});
+
+/* 标题自适应：中文按字数 + 视口宽高共同计算 */
+function fitTitle(){
+  var st = states[current];
+  if(!st || !titleEl) return;
+  var tl = st.name.length;
+  var fs = clamp(110, Math.round(Math.min(innerWidth*0.19/(tl*0.52), innerHeight*0.34)), 240);
+  titleEl.style.fontSize = fs + 'px';
+  titleEl.style.transform = 'translateX(-32px) scaleX(0.60)';
+  titleEl.style.transformOrigin = 'left bottom';
+  titleEl.style.letterSpacing = '0.02em';
+}
+
+/* ═══════════ 绘制 ═══════════ */
+function drawCover(targetCtx, media){
+  var mw = media.naturalWidth  || media.videoWidth  || media.width;
+  var mh = media.naturalHeight || media.videoHeight || media.height;
+  if(!mw || !mh) return;
+  var s = Math.max(innerWidth/mw, innerHeight/mh);
+  var w = mw*s, h = mh*s;
+  targetCtx.drawImage(media,(innerWidth-w)/2,(innerHeight-h)/2,w,h);
+}
+function drawShade(targetCtx){
+  var g = targetCtx.createLinearGradient(0,innerHeight*.52,0,innerHeight);
+  g.addColorStop(0,'rgba(0,0,0,0)');
+  g.addColorStop(1,'rgba(0,0,0,.88)');
+  targetCtx.fillStyle=g;
+  targetCtx.fillRect(0,innerHeight*.52,innerWidth,innerHeight*.48);
+}
+function roundedRectPoints(w,h,r){
+  r = Math.min(r,w/2,h/2);
+  var pts=[], arcs=[
+    [ w/2-r,-h/2+r,-Math.PI/2,0],
+    [ w/2-r, h/2-r, 0,Math.PI/2],
+    [-w/2+r, h/2-r, Math.PI/2,Math.PI],
+    [-w/2+r,-h/2+r, Math.PI,Math.PI*1.5]
+  ];
+  for(var i=0;i<arcs.length;i++){
+    var cx=arcs[i][0],cy=arcs[i][1],a0=arcs[i][2],a1=arcs[i][3];
+    for(var s=0;s<=10;s++){
+      var a=a0+(a1-a0)*(s/10);
+      pts.push([cx+Math.cos(a)*r, cy+Math.sin(a)*r]);
+    }
+  }
+  return pts;
+}
+
+/* ═══════════ 交互状态 ═══════════ */
+var targetY=0, targetX=0, rotX=0, rotY=0;
+var expansion=0, maskScale=1, canvasOpacity=1, transitionActive=false, frozen=false, zoom=1;
+
+window.addEventListener('pointermove', function(e){
+  if(busy) return;
+  targetY = (e.clientX/innerWidth  - .5) * 37.4;
+  targetX = (e.clientY/innerHeight - .5) * -33;
+},{passive:true});
+document.addEventListener('pointerleave', function(){ targetY=0; targetX=0; });
+portalBtn.addEventListener('pointerenter', function(){
+  if(!states[current].next) return;
+  cursor.classList.add('is-enter');
+});
+portalBtn.addEventListener('pointerleave', function(){ cursor.classList.remove('is-enter'); });
+
+/* ═══════════ 帧循环 ═══════════ */
+var lastT = 0;
+function draw(ts){
+  var dt = lastT ? Math.min(ts-lastT, 40) : 16;
+  lastT = ts;
+  var k = Math.min(1, dt*0.009);
+  rotX += (targetX-rotX)*k;
+  rotY += (targetY-rotY)*k;
+
+  ctx.clearRect(0,0,innerWidth,innerHeight);
+  if(frozen){ ctx.drawImage(sceneCanvas,0,0,innerWidth,innerHeight); drawShade(ctx); }
+
+  var rect = portalBtn.getBoundingClientRect();
+  var e = expansion;
+  var rcx = rect.left + rect.width/2, rcy = rect.top + rect.height/2;
+  var cx = rcx + (innerWidth/2  - rcx)*e;
+  var cy = rcy + (innerHeight/2 - rcy)*e;
+  var baseW = rect.width  + (innerWidth  - rect.width )*e;
+  var baseH = rect.height + (innerHeight - rect.height)*e;
+  var scale = e ? 1 : maskScale;
+  var w = baseW*scale, h = baseH*scale;
+  var r  = 90*(1-e)*scale;
+  var rx = rotX*(1-e), ry = rotY*(1-e);
+
+  if(w>1 && h>1){
+    var pts = roundedRectPoints(w,h,r);
+    var ax = rx*Math.PI/180, ay = ry*Math.PI/180;
+    var ca=Math.cos(ax), sa=Math.sin(ax), cb=Math.cos(ay), sb=Math.sin(ay);
+    ctx.save();
+    ctx.globalAlpha = canvasOpacity;
+    ctx.beginPath();
+    for(var i=0;i<pts.length;i++){
+      var x=pts[i][0], y=pts[i][1];
+      var xx=x*cb, yy=y*ca, z=x*sb-y*sa, p=850/(850+z);
+      var sx=cx+xx*p, sy=cy+yy*p;
+      if(i===0) ctx.moveTo(sx,sy); else ctx.lineTo(sx,sy);
+    }
+    ctx.closePath();
+    ctx.clip();
+    ctx.fillStyle='#030303';
+    ctx.fillRect(0,0,innerWidth,innerHeight);
+    if(transitionActive){
+      if(transitionVideo.complete && transitionVideo.naturalWidth){
+        var tw=transitionVideo.naturalWidth, th=transitionVideo.naturalHeight;
+        var s=Math.max(innerWidth/tw, innerHeight/th)*zoom;
+        var w=tw*s,h=th*s;
+        ctx.drawImage(transitionVideo,(innerWidth-w)/2,(innerHeight-h)/2,w,h);
+      }
+    }else{
+      var st = states[current];
+      if(st.image) drawCover(ctx,portalImage);
+      else if(portalVideo.complete && portalVideo.naturalWidth) drawCover(ctx,portalVideo);
+    }
+    if(transitionActive) drawShade(ctx);
+    else if(!states[current].next){
+      /* 终态：压暗窗口，暗示不可再前往 */
+      ctx.fillStyle='rgba(6,6,8,.42)';
+      ctx.fillRect(0,0,innerWidth,innerHeight);
+    }
+    ctx.restore();
+  }
+  requestAnimationFrame(draw);
+}
+
+/* ═══════════ 渲染 ═══════════ */
+function render(){
+  var st = states[current];
+  experience.setAttribute('data-planet', current);
+  titleEl.textContent = st.name;
+  nextNameEl.textContent  = st.next ? states[st.next].en : 'End of journey';
+  nextNumEl.textContent   = st.number;
+  fitTitle();
+  portalHeading.classList.toggle('is-end', !st.next);
+
+  factsEl.innerHTML = '';
+  st.facts.forEach(function(f){
+    var d = document.createElement('div');
+    d.className='fact';
+    var dt=document.createElement('dt'); dt.textContent=f[0];
+    var dd=document.createElement('dd'); dd.textContent=f[1];
+    d.appendChild(dt); d.appendChild(dd);
+    factsEl.appendChild(d);
+  });
+
+  listEl.innerHTML='';
+  order.forEach(function(k){
+    var s=document.createElement('span');
+    s.className='planet-item'+(k===current?' active':'');
+    s.textContent=states[k].name;
+    listEl.appendChild(s);
+  });
+  if(!firstRender){
+    listEl.classList.remove('is-switching');
+    void listEl.offsetWidth;
+    listEl.classList.add('is-switching');
+  }
+
+  document.querySelectorAll('.background').forEach(function(v){
+    v.classList.toggle('is-visible', v.id===st.background);
+  });
+
+  var terminal = !st.next;
+  if(st.image && terminal){
+    // 终态：传送门显示一张静照，不可点
+    portalImage.style.visibility='visible';
+    portalVideo.style.visibility='hidden';
+    portalBtn.setAttribute('aria-label','已是最后一站');
+    portalBtn.disabled = true;
+    portalBtn.style.pointerEvents='none';
+  }else if(st.image){
+    portalImage.style.visibility='visible';
+    portalVideo.style.visibility='hidden';
+    portalBtn.setAttribute('aria-label','前往 '+states[st.next].name);
+    portalBtn.disabled = false;
+    portalBtn.style.pointerEvents='';
+  }else{
+    portalImage.style.visibility='hidden';
+    portalVideo.style.visibility='visible';
+    portalBtn.setAttribute('aria-label','前往 '+states[st.next].name);
+    portalBtn.disabled = false;
+    portalBtn.style.pointerEvents='';
+    if(portalVideo.getAttribute('src')!==st.image){
+      portalVideo.setAttribute('src', st.image);
+    }
+  }
+  firstRender = false;
+}
+
+/* ═══════════ 入场 ═══════════ */
+function revealMask(){
+  experience.classList.remove('mask-revealing');
+  void experience.offsetWidth;
+  experience.classList.add('mask-revealing');
+  maskScale = 0;
+  return animateValue(function(v){ maskScale=v; }, 1050);
+}
+function revealPlanetContent(){
+  experience.classList.remove('content-revealing');
+  void experience.offsetWidth;
+  experience.classList.add('content-revealing');
+}
+async function startExperience(){
+  try { await portalImage.decode(); } catch(err){}
+  await revealMask();
+  document.body.classList.add('intro-ready');
+  await wait(850);
+  revealPlanetContent();
+}
+
+/* ═══════════ 预加载序列 ═══════════ */
+var finished=false;
+function finish(){
+  if(finished) return; finished=true;
+  valueEl.textContent='100';
+  countEl.classList.add('is-leaving');
+  logo.classList.add('is-docked');
+  preloader.classList.add('is-background');
+  document.body.classList.add('preload-complete');
+  startExperience();
+  setTimeout(function(){ if(countEl.parentNode) countEl.remove(); }, 750);
+  setTimeout(function(){ logo.classList.add('is-settled'); }, 2000);
+}
+function runPreloader(){
+  // 素材是静态图，没有真实时长，用定时器模拟 ~3s 的推进
+  var t0 = performance.now(), DUR = 3000;
+  function tick(){
+    var p = Math.min(1,(performance.now()-t0)/DUR);
+    valueEl.textContent = Math.round(p*100);
+    if(p<1) requestAnimationFrame(tick); else finish();
+  }
+  if(preVideo.complete) requestAnimationFrame(tick);
+  else preVideo.addEventListener('load', function(){ requestAnimationFrame(tick); },{once:true});
+}
+
+/* ═══════════ 旅行过渡 ═══════════ */
+async function travel(){
+  if(busy) return;
+  var st = states[current];
+  if(!st.next) return;
+
+  busy = true;
+  targetX=0; targetY=0; rotX=0; rotY=0;
+  var next = st.next;
+
+  experience.classList.add('is-loading');
+  transitionVideo.src = st.image;
+  await new Promise(function(res){
+    var done=false;
+    function fin(){ if(done) return; done=true; res(); }
+    transitionVideo.complete ? fin() : transitionVideo.addEventListener('load',fin,{once:true});
+    setTimeout(fin,1600);
+  });
+
+  try{
+    experience.classList.remove('is-loading','content-revealing','mask-revealing');
+    experience.classList.add('is-transitioning');
+    canvasOpacity=1;
+    transitionActive=true;
+
+    // 窗口吞没屏幕；同时轻微推近，模拟"加速"
+    await animateValue(function(v){
+      expansion=v;
+      zoom = 1 + v*0.28;
+    }, 1100);
+
+    // 冻结当前帧
+    frozen = true;
+    sceneCanvas.width  = Math.floor(innerWidth*dpr);
+    sceneCanvas.height = Math.floor(innerHeight*dpr);
+    sceneCanvas.style.width=innerWidth+'px';
+    sceneCanvas.style.height=innerHeight+'px';
+    sceneCtx.setTransform(dpr,0,0,dpr,0,0);
+    sceneCtx.clearRect(0,0,innerWidth,innerHeight);
+    if(transitionVideo.complete && transitionVideo.naturalWidth){
+      var s=Math.max(innerWidth/transitionVideo.naturalWidth, innerHeight/transitionVideo.naturalHeight)*zoom;
+      var w=transitionVideo.naturalWidth*s, h=transitionVideo.naturalHeight*s;
+      sceneCtx.drawImage(transitionVideo,(innerWidth-w)/2,(innerHeight-h)/2,w,h);
+    }
+
+    current = next;
+    experience.classList.add('is-committing');
+    render();
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+
+    transitionActive=false; expansion=0; maskScale=0; canvasOpacity=1; zoom=1;
+    experience.classList.remove('is-transitioning','is-committing');
+
+    var mr = revealMask();
+    setTimeout(revealPlanetContent,100);
+    await mr;
+    frozen=false;
+
+    await wait(450);
+    busy=false;
+  }catch(err){
+    transitionActive=false; expansion=0; maskScale=1; canvasOpacity=1; zoom=1;
+    experience.classList.remove('is-transitioning','is-committing','is-loading');
+    busy=false;
+  }
+}
+portalBtn.addEventListener('click', travel);
+
+/* ═══════════ 自定义光标 ═══════════ */
+var cx=0, cy=0, tx=0, ty=0, first=false;
+window.addEventListener('pointermove', function(e){
+  tx=e.clientX; ty=e.clientY;
+  if(!first){ first=true; cx=tx; cy=ty; cursor.classList.add('is-visible'); }
+},{passive:true});
+document.addEventListener('mouseleave', function(){ cursor.classList.remove('is-visible'); });
+function cursorLoop(){
+  cx += (tx-cx)*0.2;
+  cy += (ty-cy)*0.2;
+  cursor.style.transform='translate3d('+cx+'px,'+cy+'px,0)';
+  requestAnimationFrame(cursorLoop);
+}
+
+/* ═══════════ 启动 ═══════════ */
+document.querySelectorAll('.background').forEach(function(v){
+  if(v.tagName==='VIDEO'){ try{ v.pause(); v.currentTime=0; }catch(e){} }
+});
+resizeCanvas();
+render();
+requestAnimationFrame(draw);
+requestAnimationFrame(cursorLoop);
+runPreloader();
+
+})();
+</script>
+</body>
+</html>
