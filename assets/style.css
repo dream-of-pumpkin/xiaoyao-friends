@@ -306,16 +306,19 @@ header {
 }
 .info-val { color: var(--ink); font-family: var(--f-body); }
 .info-val.todo { color: var(--ink-faint); font-style: italic; }
+/* 胶囊标签用 ::before 生成，元素自身的「待补充」文字隐藏，避免重复显示 */
+.info-val.todo { font-size: 0; }
 .info-val.todo::before {
   content: '待补充';
   font-family: var(--f-serif);
   font-size: 12px;
+  font-style: normal;
   background: rgba(196,136,82,.16);
   color: var(--sunset-deep);
   border: 1px solid rgba(196,136,82,.4);
   padding: 2px 9px;
   border-radius: 999px;
-  margin-right: 10px;
+  margin-right: 0;
 }
 
 /* ---------- 02 爱好卡片 ---------- */
